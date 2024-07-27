@@ -230,15 +230,19 @@ docker rmi timothyfudocker/privatedocker:latest
 Download
 We recommend configuring the runner under "\actions-runner". This will help avoid issues related to service identity folder permissions and long path restrictions on Windows.
 
-# Create a folder under the drive root
-$ mkdir actions-runner; cd actions-runner# Download the latest runner package
-$ Invoke-WebRequest -Uri https://github.com/actions/runner/releases/download/v2.317.0/actions-runner-win-x64-2.317.0.zip -OutFile actions-runner-win-x64-2.317.0.zip# Optional: Validate the hash
-$ if((Get-FileHash -Path actions-runner-win-x64-2.317.0.zip -Algorithm SHA256).Hash.ToUpper() -ne 'a74dcd1612476eaf4b11c15b3db5a43a4f459c1d3c1807f8148aeb9530d69826'.ToUpper()){ throw 'Computed checksum did not match' }# Extract the installer
-$ Add-Type -AssemblyName System.IO.Compression.FileSystem ; [System.IO.Compression.ZipFile]::ExtractToDirectory("$PWD/actions-runner-win-x64-2.317.0.zip", "$PWD")
+Download
+# Create a folder
+$ mkdir actions-runner && cd actions-runner# Download the latest runner package
+$ curl -o actions-runner-linux-x64-2.317.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.317.0/actions-runner-linux-x64-2.317.0.tar.gz# Optional: Validate the hash
+$ echo "9e883d210df8c6028aff475475a457d380353f9d01877d51cc01a17b2a91161d  actions-runner-linux-x64-2.317.0.tar.gz" | shasum -a 256 -c# Extract the installer
+$ tar xzf ./actions-runner-linux-x64-2.317.0.tar.gz
 Configure
 # Create the runner and start the configuration experience
-$ ./config.cmd --url https://github.com/fusumwan/cicd-pipeline --token AY37PMQLXHWNDKDL3IHGIS3GUOMVY# Run it!
-$ ./run.cmd
+$ ./config.sh --url https://github.com/fusumwan/dockerapp2 --token AY37PMRLIVBH4VFZQWKH5LDGUSKTE# Last step, run it!
+$ ./run.sh
+Using your self-hosted runner
+# Use this YAML in your workflow file for each job
+runs-on: self-hosted
 
 =============================
 …or create a new repository on the command line
